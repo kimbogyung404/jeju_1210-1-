@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>제주의 사투리</title>
+
+  <style>
+  /* 기본 폰트 */
+  @font-face {
+    font-family: 'GowoonDodum';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff')
+         format('woff');
+    font-weight: normal;
+    font-display: swap;
+  }
+
+  /* SUIT Webfont (100~900) */
+  @font-face {
+    font-family: 'SUIT';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SUIT';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SUIT';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SUIT';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SUIT';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SUIT';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SUIT';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SUIT';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SUIT';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Heavy.woff2') format('woff2');
+    font-weight: 900;
+    font-display: swap;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'GowoonDodum', sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  /* ===========================
+      인트로 화면
+  ============================ */
+  #intro-screen {
+    position: fixed;
+    inset: 0;
+    background: url("Flow1.png") center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease;
+    z-index: 10;
+  }
+
+  .intro-wrap {
+    text-align: center;
+    transform: translateY(10px);
+  }
+
+  .title-img {
+    display: block;
+    margin: 0 auto -60px auto;
+    transform: scale(0.4);
+  }
+
+  .subtitle {
+    font-size: 35px;
+    color: #0F3253;
+    margin-bottom: 240px;
+  }
+
+  /* 모든 "시작하기" 버튼 공통 */
+  .start-btn {
+    font-family: 'GowoonDodum';
+    font-size: 24px;
+    color: #FFFFFF;
+    padding: 14px 56px;
+    border: none;
+    border-radius: 100px;
+    background: #0F3253;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .start-btn:hover {
+    transform: translateY(-2px);
+    background: #0D2943;
+  }
+
+  /* 테두리형 버튼 */
+  .btn-outline {
+    font-family: 'GowoonDodum';
+    font-size: 24px;
+    padding: 14px 56px;
+    border-radius: 100px;
+    border: 3px solid #0F3253;
+    background: #FFFFFF;
+    color: #0F3253;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-outline:hover {
+    transform: translateY(-2px);
+    background: #0F3253;
+    color: #FFFFFF;
+  }
+
+  /* ===========================
+        메인 화면
+  ============================ */
+  #main-screen {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease;
+    min-height: 100vh;
+    padding-top: 60px;
+    padding-bottom: 200px;
+    text-align: center;
+    background: linear-gradient(180deg, #36D5E1 0%, #C2FBFF 100%);
+  }
+
+  .main-title {
+    font-size: 55px;
+    color: #0F3253;
+    margin-bottom: 16px;
+  }
+
+  .nav-bar {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .nav-item {
+    font-size: 22px;
+    padding: 14px 20px;
+    border-radius: 40px;
+    border: 3px solid #0F3253;
+    background: #FFFFFF;
+    color: #0F3253;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .nav-item:hover {
+    background: #0F3253;
+    color: #FFFFFF;
+  }
+
+  .nav-item.active {
+    background: #0F3253;
+    color: #FFFFFF;
+  }
+
+  .content-section {
+    margin-top: 120px;
+  }
+
+  /* problem.png 공통 사이즈 기준 */
+  .content-section > img {
+    display: block;
+    margin: 0 auto 60px auto;
+    width: 50%;
+    height: auto;
+  }
+
+  /* 메인 설명 문단 */
+  .intro-main-text {
+    width: 70%;
+    max-width: 900px;
+    margin: 0 auto 30px auto;
+    font-size: 28px;
+    line-height: 1.6;
+    color: #0F3253;
+  }
+
+  /* language / Intro 이미지도 problem과 동일한 너비 */
+  .language-wrap,
+  .intro-img-wrap {
+    width: 50%;
+    max-width: 900px;
+    margin: 0 auto 60px auto;
+  }
+
+  .language-img,
+  .intro-img {
+    width: 100%;
+    display: block;
+    border-radius: 0;
+  }
+
+  .language-img {
+    cursor: pointer;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+  }
+  .language-img.hovering {
+    transform: scale(1.06);
+    opacity: 0.9;
+  }
+
+  /* 말풍선 영역 */
+  .bubble-wrap {
+    position: relative;
+    width: 60%;
+    max-width: 900px;
+    margin: 0 auto 120px auto;
+  }
+
+  .bubble-img {
+    width: 20%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .bubble-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #0F3253;
+    font-size: 24px;
+    text-align: center;
+    width: 80%;
+    line-height: 1.5;
+  }
+
+  .effort-text {
+    font-size: 24px;
+    color: #0F3253;
+    margin-bottom: 60px;
+  }
+
+  .effort-column img {
+    width: 50%;
+    display: block;
+    margin: 0 auto 16px auto;
+  }
+
+  .experience-section {
+    margin: 140px auto;
+    text-align: center;
+    color: #0F3253;
+    max-width: 900px;
+  }
+
+  .exp-text {
+    font-size: 24px;
+    line-height: 1.6;
+    margin-bottom: 50px;
+  }
+
+  .exp-subtext {
+    font-size: 24px;
+    margin-bottom: 40px;
+  }
+
+  /* 메인 CTA 버튼 */
+  .exp-btn {
+    font-family: 'GowoonDodum';
+    font-size: 22px;
+    color: #FFFFFF;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 40px;
+    background: #0F3253;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .exp-btn:hover {
+    background: #0D2943;
+    transform: translateY(-2px);
+  }
+
+  /* Fade-in scroll */
+  .fade-section {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .fade-section.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===========================
+        제주어 경험하기 (부표 화면)
+  ============================ */
+  /* #circle은 단순히 앵커 역할, 실제 화면은 #experience-screen */
+  #experience-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: url("Wave.png") center/cover no-repeat;
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  #experience-screen .experience-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 80px;
+    text-align: center;
+    color: #0F3253;
+  }
+
+  .exp2-title {
+    font-size: 50px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+
+  .circle-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 60px;
+  }
+
+  .circle-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .exp-circle {
+    width: 320px;
+    height: auto;
+    margin-bottom: -10px;
+    cursor: pointer;
+    will-change: transform;
+  }
+
+  /* 부표 아래 부연 설명 */
+  .circle-desc {
+    font-family: 'SUIT', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.8px;
+    font-size: 22px;
+    color: #FFFFFF;
+    max-width: 260px;
+    text-align: center;
+    line-height: 1.4;
+    margin-top: 8px;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    box-sizing: border-box;
+  }
+
+  @keyframes floatUpDown {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+
+  .circle-box:hover .exp-circle {
+    animation: floatUpDown 0.8s ease-in-out infinite;
+  }
+
+  /* ===========================
+        제주어 관련 영상 화면
+  ============================ */
+  #video-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 23;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    background: linear-gradient(180deg, #36D5E1 0%, #C2FBFF 100%);
+    overflow-y: auto;
+  }
+
+  #video-screen .video-inner {
+    max-width: 1100px;
+    margin: 80px auto 120px auto;
+    padding: 0 20px 60px;
+    text-align: center;
+    color: #0F3253;
+  }
+
+  .video-title {
+    font-size: 50px;
+    margin-bottom: 40px;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    justify-items: center;
+    margin-bottom: 40px;
+  }
+
+  .video-card {
+    box-sizing: border-box;
+  }
+
+  .video-thumb {
+    width: 100%;
+    max-width: 380px;
+    border-radius: 0;
+    display: block;
+    margin-bottom: 40px;
+  }
+
+  .video-caption {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .video-back-wrap {
+    margin-top: 10px;
+  }
+
+  /* ===========================
+        제주어 뜻 퀴즈 안내 페이지
+  ============================ */
+  #quiz-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    background: linear-gradient(180deg, #36D5E1 0%, #C2FBFF 100%);
+    overflow-y: auto;
+  }
+
+  #quiz-screen .quiz-inner {
+    max-width: 1100px;
+    margin: 80px auto 120px auto;
+    padding: 0 20px;
+    text-align: center;
+    color: #0F3253;
+  }
+
+  .quiz-title {
+    font-size: 50px;
+    margin-bottom: -22px;
+  }
+
+  .quiz-subtitle {
+    font-size: 36px;
+    margin-bottom: 60px;
+  }
+
+  .quiz-box-img {
+    width: 72%;
+    max-width: 720px;
+    display: block;
+    margin: 0 auto 16px auto;
+    border-radius: 0;
+  }
+
+  .quiz-back-wrap {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  /* ===========================
+        제주어 뜻 퀴즈 실제 플레이
+  ============================ */
+  #quiz-play-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 26;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    background:
+      url("bubble.png") no-repeat center center,
+      linear-gradient(180deg, #36D5E1 0%, #C2FBFF 100%);
+    background-size: 480px auto, auto;
+    overflow-y: auto;
+  }
+
+  #quiz-play-screen .play-inner {
+    max-width: 1100px;
+    margin: 60px auto 120px auto;
+    padding: 0 32px 80px;
+    color: #0F3253;
+  }
+
+  .status-bar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 80px;
+    padding-right: 0;
+  }
+
+  .status-pill {
+    font-family: 'SUIT', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.8px;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: rgba(18, 18, 18, 0.4);
+    color: #FFFFFF;
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .word-area {
+    text-align: center;
+    margin-bottom: -16px;
+  }
+
+  .jeju-word {
+    font-size: 76px;
+    margin-bottom: 20px;
+  }
+
+  .result-img {
+    height: 120px;
+    width: auto;
+  }
+
+  .correct-answer-text {
+    margin-top: 16px;
+    font-size: 20px;
+  }
+
+  .hint-btn {
+    font-family: 'SUIT', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.8px;
+    font-size: 24px;
+    padding: 10px 28px;
+    border-radius: 10px;
+    border: 2px solid #0F3253;
+    background: transparent;
+    color: #0F3253;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .hint-btn:hover {
+    background: #0F3253;
+    color: #FFFFFF;
+  }
+
+  .answer-area {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .answer-box {
+    display: flex;
+    align-items: stretch;
+    width: 80%;
+    max-width: 480px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 0 0 0 24px;
+    height: 80px;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  .answer-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    height: 80px;
+    line-height: 80px;
+    padding: 0;
+    font-size: 24px;
+    font-family: 'SUIT', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.8px;
+    color: #121212;
+  }
+
+  .answer-input::placeholder {
+    color: #bbbbbb;
+  }
+
+  .answer-input[readonly] {
+    cursor: default;
+  }
+
+  .answer-submit {
+    font-family: 'SUIT', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.8px;
+    font-size: 24px;
+    padding: 0 32px;
+    border: none;
+    background: #0086AF;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .answer-submit:hover {
+    background: #0D2943;
+  }
+
+  /* 힌트 모달 */
+  #hint-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 27;
+    background: rgba(0,0,0,0.3);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hint-modal-card {
+    width: 90%;
+    max-width: 560px;
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 40px 40px 48px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    position: relative;
+    text-align: center;
+    color: #0F3253;
+  }
+
+  .hint-modal-title {
+    font-family: 'SUIT', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.8px;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .hint-modal-text {
+    font-family: 'SUIT', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.8px;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .hint-modal-close {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+    color: #777777;
+  }
+
+  /* ===========================
+      결과 화면 (영상 배경 페이지)
+  ============================ */
+  #quiz-result-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 40;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    overflow: hidden;
+  }
+
+  .result-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #quiz-result-screen .result-inner {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    color: #0F3253;
+  }
+
+  #quiz-result-screen .result-inner h2 {
+    font-size: 50px;
+    margin-bottom: 12px;
+  }
+
+  .result-sub {
+    font-size: 36px;
+    margin-bottom: 32px;
+  }
+
+  .result-words-panel {
+    margin-bottom: 40px;
+  }
+
+  .result-words-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 16px;
+  }
+
+  .result-word-chip {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #0F3253;
+    font-size: 24px;
+    white-space: nowrap;
+    position: relative;
+    will-change: transform;
+    animation: wordFloatUpDown 1.6s ease-in-out infinite;
+  }
+
+  @keyframes wordFloatUpDown {
+    0%, 100% {
+      transform: translateY(-8px);
+    }
+    50% {
+      transform: translateY(8px);
+    }
+  }
+
+  .result-word-chip:nth-child(even) {
+    animation-delay: -0.8s;
+  }
+
+  .result-btn-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  </style>
+</head>
+
+<body>
+
+<!-- 인트로 -->
+<div id="intro-screen">
+  <div class="intro-wrap">
+    <img src="title.png" class="title-img" alt="title">
+    <p class="subtitle">소멸 위기에 처한 제주의 말을 경험해보세요.</p>
+    <button class="start-btn" onclick="goToMain()">시작하기</button>
+  </div>
+</div>
+
+<!-- 메인 -->
+<div id="main-screen">
+
+  <h1 class="main-title fade-section">소멸 위기에 처한 제주의 사투리</h1>
+
+  <div class="nav-bar fade-section">
+    <div class="nav-item active">제주어 소개</div>
+    <div class="nav-item">제주의 멸종위기 이유</div>
+    <div class="nav-item">제주시의 노력</div>
+  </div>
+
+  <div class="content-section">
+
+    <!-- 설명 문장 -->
+    <p class="intro-main-text fade-section">
+      제주어는 제주도에서 사용되는 독특한 방언이자,<br>
+      매우 오래된 고어와 제주의 독특한 자연·문화를 담고 있는 언어입니다.
+    </p>
+
+    <!-- language.png -->
+    <div class="language-wrap fade-section">
+      <img src="language.png" class="language-img" alt="language">
+    </div>
+
+    <!-- Intro.png -->
+    <div class="intro-img-wrap fade-section" id="section-intro">
+      <img src="Intro.png" class="intro-img" alt="intro">
+    </div>
+
+    <!-- 말풍선 -->
+    <div class="bubble-wrap fade-section">
+      <img src="bubble.png" class="bubble-img" alt="bubble">
+      <p class="bubble-text">
+        그러나, 제주어는 이제<br>
+        고령층만 사용하는 언어가 되어<br>
+        서서히 기억 속으로 사라지고 있습니다.
+      </p>
+    </div>
+
+    <img src="problem.png" class="fade-section" id="section-problem" alt="problem">
+
+    <p class="effort-text fade-section">
+      소멸을 늦추기 위해, 제주도는 제주어 보존을<br>
+      위한 다양한 노력을 하고 있습니다.
+    </p>
+
+    <div class="effort-column fade-section" id="section-effort">
+      <img src="effort1.png" alt="노력 1">
+      <img src="effort2.png" alt="노력 2">
+      <a href="https://jejudic.kr/" target="_blank">
+        <img src="effort3.png" alt="노력 3" style="cursor:pointer;">
+      </a>
+    </div>
+
+  </div>
+
+  <div class="experience-section fade-section">
+    <p class="exp-text">
+      소멸 직전에 놓인 제주어를 지키기 위해서는<br>
+      우리의 실질적인 관심이 더욱 필요합니다.
+    </p>
+    <p class="exp-subtext">제주어, 한 번 경험해보실래요?</p>
+
+    <!-- 🔊 클릭 사운드 추가 -->
+    <button class="exp-btn" onclick="playClickSound(); showExperience();">제주어 경험하러 가기</button>
+  </div>
+
+</div>
+
+<!-- 제주어 경험하기 (부표 화면) -->
+<!-- 🔗 여기 id="circle" 추가해서 index.html#circle 앵커 타겟 -->
+<div id="circle">
+  <div id="experience-screen">
+    <div class="experience-inner">
+      <h2 class="exp2-title">
+        듣고 쓰면서<br>
+        제주어를 체험해보세요
+      </h2>
+
+      <div class="circle-row">
+        <div class="circle-box">
+          <img src="circle1.png" id="circle-video" class="exp-circle" alt="제주어 영상">
+          <p class="circle-desc">제주어를 재밌게 알려주는<br>영상 콘텐츠 소개</p>
+        </div>
+
+        <div class="circle-box">
+          <img src="circle2.png" id="circle-quiz" class="exp-circle" alt="제주어 퀴즈">
+          <p class="circle-desc">제주어가 무슨 뜻을<br>가지고 있는지 맞히는 퀴즈</p>
+        </div>
+
+        <div class="circle-box">
+          <img src="circle3.png" id="circle-game" class="exp-circle" alt="제주어 발음 게임">
+          <p class="circle-desc">제한 시간 내 제주어를<br>많이 발음해보는 게임</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 제주어 관련 영상 화면 -->
+<div id="video-screen">
+  <div class="video-inner">
+    <h2 class="video-title">제주어 관련 영상</h2>
+
+    <div class="video-grid">
+      <!-- 1줄 -->
+      <div class="video-card">
+        <img src="video1.png" class="video-thumb" alt="영상1">
+      </div>
+      <div class="video-card">
+        <img src="video2.png" class="video-thumb" alt="영상2">
+      </div>
+      <div class="video-card">
+        <img src="video3.png" class="video-thumb" alt="영상3">
+      </div>
+
+      <!-- 2줄 -->
+      <div class="video-card">
+        <img src="video4.png" class="video-thumb" alt="영상4">
+      </div>
+      <div class="video-card">
+        <img src="video5.png" class="video-thumb" alt="영상5">
+      </div>
+      <div class="video-card">
+        <img src="video6.png" class="video-thumb" alt="영상6">
+      </div>
+
+      <!-- 3줄 -->
+      <div class="video-card">
+        <img src="video7.png" class="video-thumb" alt="영상7">
+      </div>
+      <div class="video-card">
+        <img src="video8.png" class="video-thumb" alt="영상8">
+      </div>
+      <div class="video-card">
+        <img src="video9.png" class="video-thumb" alt="영상9">
+      </div>
+    </div>
+
+    <div class="video-back-wrap">
+      <button class="btn-outline" onclick="backToExperienceFromVideo()">되돌아가기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 제주어 뜻 퀴즈 안내 -->
+<div id="quiz-screen">
+  <div class="quiz-inner">
+    <h2 class="quiz-title">제주어 뜻 퀴즈</h2>
+    <p class="quiz-subtitle">플레이 전, 아래의 이용방법을 참고해주세요.</p>
+
+    <img src="Box1.png" class="quiz-box-img" alt="퀴즈 이용방법 1">
+    <img src="Box2.png" class="quiz-box-img" alt="퀴즈 이용방법 2">
+    <img src="Box3.png" class="quiz-box-img" alt="퀴즈 이용방법 3">
+
+    <div class="quiz-back-wrap">
+      <button class="btn-outline" onclick="playClickSound(); backToExperience();">되돌아가기</button>
+      <button class="start-btn" onclick="playClickSound(); goToQuizPlay();">시작하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 제주어 뜻 퀴즈 플레이 -->
+<div id="quiz-play-screen">
+  <div class="play-inner">
+
+    <div class="status-bar">
+      <div class="status-pill" id="hint-status">남은 힌트 | 5/5</div>
+      <div class="status-pill" id="question-status">남은 문제 | 10/10</div>
+    </div>
+
+    <div class="word-area">
+      <div class="jeju-word" id="jeju-word">잠녀</div>
+      <button class="hint-btn" onclick="openHintModal()">힌트 보기</button>
+      <div class="correct-answer-text" id="correct-answer-text"></div>
+    </div>
+
+    <div class="answer-area">
+      <div class="answer-box">
+        <input
+          type="text"
+          class="answer-input"
+          placeholder="여기에 뜻을 입력해주세요"
+          id="answer-input"
+        >
+        <button class="answer-submit" id="answer-submit">입력 완료</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 힌트 모달 -->
+<div id="hint-modal">
+  <div class="hint-modal-card">
+    <button class="hint-modal-close" onclick="closeHintModal()">×</button>
+    <div class="hint-modal-title">힌트</div>
+    <div class="hint-modal-text" id="hint-text"></div>
+  </div>
+</div>
+
+<!-- 결과 화면 (영상 배경) -->
+<div id="quiz-result-screen">
+  <video
+    class="result-video"
+    autoplay
+    muted
+    loop
+    playsinline
+  >
+    <source src="https://cdn.midjourney.com/video/1905a823-3bac-47c0-a0f9-32bc324c4328/1.mp4" type="video/mp4">
+  </video>
+
+  <div class="result-inner">
+    <h2 id="result-title">제주어 0개 획득!</h2>
+    <p class="result-sub">제주어 살리기에 동참했어요</p>
+
+    <div class="result-words-panel" id="result-words-panel">
+      <div class="result-words-cloud" id="result-words-cloud"></div>
+    </div>
+
+    <div class="result-btn-wrap">
+      <button class="btn-outline" onclick="showMyWrongAnswers()">나의 오답 보기</button>
+      <!-- 이건 이 페이지(퀴즈)용 '처음으로' = 경험하기 화면으로 복귀 -->
+      <button class="start-btn" onclick="goToMainFromResult()">처음으로</button>
+    </div>
+  </div>
+</div>
+
+<!-- 🔊 오디오 리소스 (확장자 소문자 + Success 오타 수정) -->
+<audio id="click-sound" src="Click Sound.mp3" preload="auto"></audio>
+<audio id="fail-sound" src="Fail sound.wav" preload="auto"></audio>
+<audio id="success-sound" src="Success Sound.wav" preload="auto"></audio>
+<audio id="bg-waves" src="Sound of waves.mp3" preload="auto" loop></audio>
+
+<script>
+/* ===========================
+   상수 & 상태
+=========================== */
+const TOTAL_QUESTIONS = 10;
+const MAX_HINTS = 5;
+
+const QUIZ_POOL = [
+  { word: "정주기",     answer: "천천히",        hint: "서두르지 않고 느린 속도로 뜻하는 부사" },
+  { word: "멩질허다",   answer: "멍 때리다",      hint: "아무 생각 없이 허공을 바라보는 상태" },
+  { word: "혼저옵서예", answer: "어서 오세요",    hint: "가게나 집에서 손님 맞을 때 쓰는 환영 인사" },
+  { word: "그거무사",   answer: "아뿔사",         hint: "놀라거나 이유를 물을 때 쓰는 감탄사" },
+  { word: "먹저",       answer: "드세요",         hint: "음식을 권할 때 쓰는 표현의 존댓말" },
+  { word: "오라방",     answer: "오빠",           hint: "여자가 남자 형제·연인을 부를 때" },
+  { word: "영",         answer: "이렇게",         hint: "어떤 방식이나 모양을 직접 보여주며 말할 때 쓰는 표현" },
+  { word: "하영",       answer: "많이",           hint: "양이나 정도가 큼을 나타내는 표현" },
+  { word: "모다",       answer: "다",             hint: "전체를 의미" },
+  { word: "고냉",       answer: "그냥",           hint: "별다른 이유 없이를 의미하는 말" },
+  { word: "감저",       answer: "고구마",         hint: "달콤한 뿌리작물을 뜻하는 말" },
+  { word: "지슬",       answer: "감자",           hint: "고구마와 함께 식재료로 쓰는 뿌리작물" },
+  { word: "망감",       answer: "저녁밥",         hint: "하루의 마지막 식사를 의미하는 말" },
+  { word: "아즈방",     answer: "아저씨",         hint: "성인 남성을 부르는 표현" },
+  { word: "도체비",     answer: "도망치다",       hint: "빨리 달아나 피하는 것" },
+  { word: "놈삐",       answer: "무",             hint: "흰 속살을 가진 뿌리 채소" },
+  { word: "가살",       answer: "곱슬머리",       hint: "머리결이 곱슬한 상태" },
+  { word: "몽생이",     answer: "고양이",         hint: "집에서 함께 지내는 반려동물" },
+  { word: "도새기",     answer: "돼지",           hint: "분홍빛 몸을 가진 가축" },
+  { word: "반갑수다",   answer: "반갑습니다",     hint: "만날 때 기분 좋게 인사하는 말" },
+  { word: "안녕하우꽈", answer: "안녕하세요",     hint: "처음 인사할 때 쓰는 표현" },
+  { word: "하영 고맙수다", answer: "정말 고마워요", hint: "감사의 마음을 전할 때" }
+];
+
+let quizSet = [];
+let currentIndex = 0;
+let isFeedbackPhase = false;
+let remainingHints = MAX_HINTS;
+let remainingQuestions = TOTAL_QUESTIONS;
+
+let collectedCount = 0;
+let wrongAnswers = [];
+let correctWords = [];
+let autoNextTimer = null;
+
+/* ===========================
+   사운드 공통 함수
+=========================== */
+function playSoundById(id) {
+  const audio = document.getElementById(id);
+  if (!audio) return;
+  try {
+    audio.currentTime = 0;
+    audio.play();
+  } catch (e) {
+    // 자동재생 정책 등에 막혀도 조용히 무시
+  }
+}
+
+function playClickSound() {
+  playSoundById("click-sound");
+}
+
+function playFailSound() {
+  playSoundById("fail-sound");
+}
+
+function playSuccessSound() {
+  playSoundById("success-sound");
+}
+
+/* 결과 화면 배경 음악 on/off */
+function toggleBgWaves(shouldPlay) {
+  const bg = document.getElementById("bg-waves");
+  if (!bg) return;
+  try {
+    if (shouldPlay) {
+      bg.currentTime = 0;
+      bg.play();
+    } else {
+      bg.pause();
+      bg.currentTime = 0;
+    }
+  } catch (e) {
+    // 자동재생 정책 등에 막혀도 무시
+  }
+}
+
+/* 공통 함수 */
+function normalize(str) {
+  return (str || "").replace(/\s+/g, "").trim();
+}
+
+function updateStatusBar() {
+  const hintStatusEl = document.getElementById("hint-status");
+  const questionStatusEl = document.getElementById("question-status");
+  if (hintStatusEl) {
+    hintStatusEl.textContent = `남은 힌트 | ${remainingHints}/${MAX_HINTS}`;
+  }
+  if (questionStatusEl) {
+    questionStatusEl.textContent = `남은 문제 | ${remainingQuestions}/${TOTAL_QUESTIONS}`;
+  }
+}
+
+function createRandomQuizSet() {
+  const arr = [...QUIZ_POOL];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.slice(0, TOTAL_QUESTIONS);
+}
+
+function loadCurrentQuiz() {
+  const jejuEl        = document.getElementById("jeju-word");
+  const inputEl       = document.getElementById("answer-input");
+  const correctTextEl = document.getElementById("correct-answer-text");
+  const hintBtn       = document.querySelector(".hint-btn");
+  const submitBtn     = document.getElementById("answer-submit");
+
+  if (!quizSet.length || !jejuEl || !inputEl) return;
+
+  const currentQuiz = quizSet[currentIndex];
+
+  jejuEl.textContent = currentQuiz.word;
+  if (correctTextEl) correctTextEl.textContent = "";
+  inputEl.value = "";
+  inputEl.readOnly = false;
+  inputEl.style.color = "#121212";
+  if (hintBtn) hintBtn.style.visibility = "visible";
+
+  if (submitBtn) {
+    submitBtn.style.display = "flex";
+  }
+
+  isFeedbackPhase = false;
+}
+
+/* 인트로 → 메인 */
+function goToMain() {
+  playClickSound();
+
+  const intro = document.getElementById("intro-screen");
+  const main  = document.getElementById("main-screen");
+
+  intro.style.opacity = 0;
+  setTimeout(() => {
+    intro.style.display = "none";
+    main.style.display = "block";
+    setTimeout(() => {
+      main.style.opacity = 1;
+      initScrollAnimations();
+    }, 50);
+  }, 800);
+}
+
+/* 퀴즈 결과 → 경험하기 화면으로 (이 페이지 내) */
+function goToMainFromResult() {
+  playClickSound();
+  toggleBgWaves(false);
+
+  const result = document.getElementById("quiz-result-screen");
+  const exp    = document.getElementById("experience-screen");
+
+  result.style.opacity = 0;
+  setTimeout(() => {
+    result.style.display = "none";
+  }, 400);
+
+  exp.style.display = "block";
+  setTimeout(() => {
+    exp.style.opacity = 1;
+  }, 20);
+}
+
+/* 스크롤 애니메이션 */
+function initScrollAnimations() {
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll(".fade-section")
+    .forEach(el => observer.observe(el));
+}
+
+/* 경험하기 화면 열기 */
+function showExperience() {
+  const exp = document.getElementById("experience-screen");
+  exp.style.display = "block";
+  setTimeout(() => { exp.style.opacity = 1; }, 20);
+}
+
+/* 제주어 관련 영상 화면 열기 */
+function showVideoList() {
+  const exp   = document.getElementById("experience-screen");
+  const video = document.getElementById("video-screen");
+
+  exp.style.opacity = 0;
+  setTimeout(() => {
+    exp.style.display = "none";
+  }, 400);
+
+  video.style.display = "block";
+  setTimeout(() => {
+    video.style.opacity = 1;
+  }, 20);
+}
+
+/* 영상 → 경험하기 되돌아가기 */
+function backToExperienceFromVideo() {
+  playClickSound();
+
+  const exp   = document.getElementById("experience-screen");
+  const video = document.getElementById("video-screen");
+
+  video.style.opacity = 0;
+  setTimeout(() => {
+    video.style.display = "none";
+  }, 400);
+
+  exp.style.display = "block";
+  setTimeout(() => {
+    exp.style.opacity = 1;
+  }, 20);
+}
+
+/* 퀴즈 안내 화면 열기 */
+function showQuiz() {
+  const exp  = document.getElementById("experience-screen");
+  const quiz = document.getElementById("quiz-screen");
+
+  exp.style.opacity = 0;
+  setTimeout(() => { exp.style.display = "none"; }, 400);
+
+  quiz.style.display = "block";
+  setTimeout(() => { quiz.style.opacity = 1; }, 20);
+}
+
+/* 퀴즈 안내 → 경험하기 되돌아가기 */
+function backToExperience() {
+  const exp  = document.getElementById("experience-screen");
+  const quiz = document.getElementById("quiz-screen");
+
+  quiz.style.opacity = 0;
+  setTimeout(() => { quiz.style.display = "none"; }, 400);
+
+  exp.style.display = "block";
+  setTimeout(() => { exp.style.opacity = 1; }, 20);
+}
+
+/* 힌트 모달 */
+function openHintModal() {
+  const modal   = document.getElementById("hint-modal");
+  const hintTxt = document.getElementById("hint-text");
+
+  if (!quizSet.length) return;
+  if (remainingHints <= 0 || isFeedbackPhase) return;
+
+  const currentQuiz = quizSet[currentIndex];
+
+  remainingHints = Math.max(0, remainingHints - 1);
+  updateStatusBar();
+
+  hintTxt.textContent = currentQuiz.hint;
+  modal.style.display = "flex";
+}
+
+function closeHintModal() {
+  document.getElementById("hint-modal").style.display = "none";
+}
+
+/* 2초 후 다음 문제 */
+function scheduleNextQuestion() {
+  if (autoNextTimer) {
+    clearTimeout(autoNextTimer);
+  }
+  autoNextTimer = setTimeout(() => {
+    if (remainingQuestions <= 0 || currentIndex >= quizSet.length - 1) {
+      showResultPage();
+    } else {
+      currentIndex++;
+      loadCurrentQuiz();
+    }
+  }, 2000);
+}
+
+/* 정답 체크 */
+function handleAnswerSubmit() {
+  const submitBtn     = document.getElementById("answer-submit");
+  const jejuEl        = document.getElementById("jeju-word");
+  const inputEl       = document.getElementById("answer-input");
+  const hintBtn       = document.querySelector(".hint-btn");
+
+  if (!jejuEl || !inputEl || !quizSet.length) return;
+  if (isFeedbackPhase) return;
+
+  const currentQuiz = quizSet[currentIndex];
+  const userAnswer  = (inputEl.value || "").trim();
+  if (!userAnswer) return;
+
+  isFeedbackPhase = true;
+
+  if (normalize(userAnswer) === normalize(currentQuiz.answer)) {
+    jejuEl.innerHTML = `<img src="Correct.png" class="result-img" alt="정답">`;
+    playSuccessSound();
+    collectedCount++;
+    if (!correctWords.includes(currentQuiz.word)) {
+      correctWords.push(currentQuiz.word);
+    }
+  } else {
+    jejuEl.innerHTML = `<img src="False.png" class="result-img" alt="오답">`;
+    playFailSound();
+    inputEl.value = `정답: ${currentQuiz.answer}`;
+    wrongAnswers.push({
+      word: currentQuiz.word,
+      userAnswer: userAnswer,
+      correctAnswer: currentQuiz.answer
+    });
+  }
+
+  if (hintBtn) hintBtn.style.visibility = "hidden";
+  inputEl.readOnly = true;
+  if (submitBtn) submitBtn.style.display = "none";
+
+  remainingQuestions = Math.max(0, remainingQuestions - 1);
+  updateStatusBar();
+
+  scheduleNextQuestion();
+}
+
+/* 결과 화면 단어칩 렌더링 */
+function renderResultWords() {
+  const panel = document.getElementById("result-words-panel");
+  const cloud = document.getElementById("result-words-cloud");
+
+  cloud.innerHTML = "";
+  if (!correctWords.length) {
+    panel.style.display = "none";
+    return;
+  }
+
+  panel.style.display = "block";
+  correctWords.forEach(word => {
+    const chip = document.createElement("div");
+    chip.className = "result-word-chip";
+    chip.textContent = word;
+    cloud.appendChild(chip);
+  });
+}
+
+/* 결과 페이지 */
+function showResultPage() {
+  const quizPlay = document.getElementById("quiz-play-screen");
+  const result   = document.getElementById("quiz-result-screen");
+
+  if (autoNextTimer) {
+    clearTimeout(autoNextTimer);
+    autoNextTimer = null;
+  }
+
+  quizPlay.style.opacity = 0;
+  setTimeout(() => { quizPlay.style.display = "none"; }, 400);
+
+  document.getElementById("result-title").textContent =
+    `제주어 ${collectedCount}개 획득!`;
+
+  renderResultWords();
+
+  result.style.display = "block";
+  setTimeout(() => {
+    result.style.opacity = 1;
+    toggleBgWaves(true);
+  }, 20);
+}
+
+/* 오답 보기 */
+function showMyWrongAnswers() {
+  playClickSound();
+
+  if (!wrongAnswers.length) {
+    alert("틀린 답이 없어요!");
+    return;
+  }
+
+  const lines = wrongAnswers.map(item => {
+    const user = item.userAnswer || "(입력 없음)";
+    return `${item.word} - ${user} (정답: ${item.correctAnswer})`;
+  });
+
+  alert("나의 오답:\n" + lines.join("\n"));
+}
+
+/* 퀴즈 시작 */
+function goToQuizPlay() {
+  const quizInfo = document.getElementById("quiz-screen");
+  const quizPlay = document.getElementById("quiz-play-screen");
+
+  quizInfo.style.opacity = 0;
+  setTimeout(() => { quizInfo.style.display = "none"; }, 400);
+
+  quizPlay.style.display = "block";
+  setTimeout(() => {
+    quizPlay.style.opacity = 1;
+
+    quizSet            = createRandomQuizSet();
+    currentIndex       = 0;
+    isFeedbackPhase    = false;
+    remainingHints     = MAX_HINTS;
+    remainingQuestions = TOTAL_QUESTIONS;
+    collectedCount     = 0;
+    wrongAnswers       = [];
+    correctWords       = [];
+
+    updateStatusBar();
+    loadCurrentQuiz();
+  }, 20);
+}
+
+/* ============================================
+   영상 클릭 → 유튜브 링크 이동
+=============================================== */
+const VIDEO_LINKS = {
+  "video1.png": "https://youtu.be/pnPr6e8dqls?si=abGbVcOKXNFdg7HE",
+  "video2.png": "https://youtu.be/NCQ27ge9U7U?si=HjAYYEiXXeRq5tRy",
+  "video3.png": "https://youtu.be/8879Sq3rxPs?si=gsfFeCgwcW_qhIxO",
+  "video4.png": "https://youtu.be/oOsibBtffIU?si=h0n-uDolWqUrzRC8",
+  "video5.png": "https://youtu.be/cCchIPz_pBs?si=b7L91Z_YdOMrf9Z1",
+  "video6.png": "https://youtu.be/48XeIjHnrAk?si=VyQ2tH2fihTJePDY",
+  "video7.png": "https://youtu.be/u9Njo0cNO38?si=kCso8VfM9K8xdQEg",
+  "video8.png": "https://youtube.com/shorts/bId_fpNBE20?si=h2KgYtnR5ccHTtwq",
+  "video9.png": "https://youtu.be/jLGZsoRrmTY?si=R3M2QuU9_KkSLafu"
+};
+
+/* DOM 로드 후 실행 */
+document.addEventListener("DOMContentLoaded", () => {
+  /* 네비게이션 */
+  const navItems       = document.querySelectorAll(".nav-item");
+  const sectionProblem = document.getElementById("section-problem");
+  const sectionEffort  = document.getElementById("section-effort");
+
+  navItems.forEach(item => {
+    item.addEventListener("click", () => {
+      navItems.forEach(n => n.classList.remove("active"));
+      item.classList.add("active");
+
+      const text = item.innerText.trim();
+
+      if (text === "제주어 소개") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (text === "제주의 멸종위기 이유") {
+        sectionProblem.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else if (text === "제주시의 노력") {
+        sectionEffort.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  });
+
+  /* language Hover */
+  const lang = document.querySelector(".language-img");
+  if (lang) {
+    const original = "language.png";
+    const hoverImg = "language2.png";
+
+    lang.addEventListener("mouseenter", () => {
+      lang.classList.add("hovering");
+      setTimeout(() => { lang.src = hoverImg; }, 120);
+    });
+
+    lang.addEventListener("mouseleave", () => {
+      lang.classList.remove("hovering");
+      setTimeout(() => { lang.src = original; }, 120);
+    });
+  }
+
+  /* 부표 클릭 */
+  const circleQuiz  = document.getElementById("circle-quiz");
+  if (circleQuiz) {
+    circleQuiz.addEventListener("click", () => {
+      playClickSound();
+      showQuiz();
+    });
+  }
+
+  const circleVideo = document.getElementById("circle-video");
+  if (circleVideo) {
+    circleVideo.addEventListener("click", () => {
+      playClickSound();
+      showVideoList();
+    });
+  }
+
+  const circleGame = document.getElementById("circle-game");
+  if (circleGame) {
+    circleGame.addEventListener("click", () => {
+      playClickSound();
+      // ✅ 발음 게임 페이지로 이동
+      window.location.href = "next.html";
+    });
+  }
+
+  /* 정답 제출 */
+  const answerBtn   = document.getElementById("answer-submit");
+  const answerInput = document.getElementById("answer-input");
+
+  if (answerBtn) answerBtn.addEventListener("click", handleAnswerSubmit);
+
+  if (answerInput) {
+    answerInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleAnswerSubmit();
+      }
+    });
+  }
+
+  /* 영상 클릭 이벤트 */
+  document.querySelectorAll(".video-thumb").forEach(img => {
+    img.style.cursor = "pointer";
+    img.addEventListener("click", () => {
+      const link = VIDEO_LINKS[img.getAttribute("src")];
+      if (link) window.open(link, "_blank");
+    });
+  });
+
+  updateStatusBar();
+
+  // ✅ URL에 #circle로 들어온 경우: 바로 부표 화면 띄우기
+  if (window.location.hash === "#circle") {
+    const intro = document.getElementById("intro-screen");
+    const main  = document.getElementById("main-screen");
+    const exp   = document.getElementById("experience-screen");
+
+    // 인트로 숨기기
+    if (intro) {
+      intro.style.opacity = 0;
+      intro.style.display = "none";
+    }
+
+    // 메인 화면 보여주기 + 스크롤 애니메이션 활성화
+    if (main) {
+      main.style.display = "block";
+      main.style.opacity = 1;
+      initScrollAnimations();
+    }
+
+    // 부표(경험하기) 화면 바로 열기
+    if (exp) {
+      exp.style.display = "block";
+      exp.style.opacity = 1;
+    }
+  }
+});
+</script>
+
+</body>
+</html>
