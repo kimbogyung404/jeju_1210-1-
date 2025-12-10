@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no" />
+<title>Jeju Words • 찾기 게임</title>
+<style>
+  /* 고운돋움 (결과 화면 / 칩 / 버튼용) */
+  @font-face {
+    font-family: 'GowunDodum';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff')
+         format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* SUIT Bold (단어 / UI용) */
+  @font-face {
+    font-family: 'SUIT';
+    src: url('https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/static/woff2/SUIT-Bold.woff2')
+         format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #45E0E8;  /* 원래 에메랄드 색 */
+    font-family: "돋움","Dotum",sans-serif;
+    position: relative;
+  }
+
+  /* 상단 전체 행: 중앙 카드 + 오른쪽 카드 2개 */
+  .hud-row {
+    position: fixed;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 40px;
+    width: calc(100% - 80px);
+    max-width: 1060px;
+    box-sizing: border-box;
+  }
+
+  /* 중앙 큰 카드 */
+  .hud-main {
+    flex: 1;
+    max-width: 640px;
+    background: rgba(18, 18, 18, 0.2);
+    border-radius: 12px;
+    padding: 18px 18px 16px;
+    color: #FFFFFF;
+    font-family: 'SUIT', sans-serif;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .hud-main-title {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .hud-main-sub {
+    font-size: 22px;
+    opacity: 0.95;
+    margin-bottom: 10px;
+  }
+
+  /* 부연 설명을 큰 제목처럼 */
+  .main-big-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .hud-main-body {
+    margin-top: 6px;
+  }
+
+  .input-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .answer-input {
+    flex: 1;
+    max-width: 380px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    border: none;
+    font-family: 'SUIT', sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    outline: none;
+    text-align: center;
+    box-shadow: none;
+  }
+
+  .answer-btn {
+    font-family: 'SUIT', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: #FFFFFF;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 10px;
+    background: #0F3253;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: none;
+  }
+
+  .answer-btn:hover {
+    background: #0D2943;
+    transform: translateY(-1px);
+  }
+
+  .answer-display {
+    display: none;
+    margin: 10px auto 0;
+    max-width: 380px;
+    background: #FFFFFF;
+    color: #0F3253;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-family: 'SUIT', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    box-shadow: none;
+  }
+
+  .answer-feedback {
+    margin-top: 8px;
+    font-size: 16px;
+    min-height: 14px;
+    opacity: 0.95;
+  }
+
+  /* 오른쪽 카드 묶음 (시간, 점수) */
+  .hud-side {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 12px;
+  }
+
+  .hud-pill {
+    border-radius: 100px;
+    background: rgba(18, 18, 18, 0.5);
+    color: #FFFFFF;
+    font-family: 'SUIT', sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    padding: 12px 28px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    box-sizing: border-box;
+    box-shadow: none;
+  }
+
+  /* 제주어 단어 레이어 (맨 뒤) */
+  .word-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .word {
+    position: absolute;
+    color: #FFFFFF;
+    font-size: 35px;
+    white-space: nowrap;
+    user-select: none;
+    font-family: 'SUIT', sans-serif;
+    font-weight: 600;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .word-clicked {
+    transform: scale(1.1);
+  }
+
+  /* 줄 캔버스 (단어 위, 카드/타이머 아래) */
+  canvas {
+    position: fixed;
+    inset: 0;
+    display: block;
+    z-index: 2;
+  }
+
+  /* 🦵 legs.gif — 제일 아래 레이어 */
+  .legs-gif {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+    transform-origin: top center;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ===========================
+      결과 화면 (영상 배경 페이지)
+  ============================ */
+  #quiz-result-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 40;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    overflow: hidden;
+  }
+
+  .result-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #quiz-result-screen .result-inner {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    color: #0F3253;
+  }
+
+  /* 결과 타이틀/부제 고운돋움 */
+  #quiz-result-screen .result-inner h2 {
+    font-size: 46px;
+    margin-bottom: 16px;
+    font-family: 'GowunDodum', sans-serif;
+  }
+
+  .result-sub {
+    font-size: 24px;
+    margin-bottom: 32px;
+    font-family: 'GowunDodum', sans-serif;
+  }
+
+  .result-words-panel {
+    margin-bottom: 40px;
+  }
+
+  .result-words-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 16px;
+  }
+
+  .result-word-chip {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #0F3253;
+    font-size: 24px;
+    white-space: nowrap;
+    position: relative;
+    will-change: transform;
+    animation: wordFloatUpDown 1.6s ease-in-out infinite;
+    font-family: 'GowunDodum', sans-serif;
+    box-shadow: none;
+  }
+
+  @keyframes wordFloatUpDown {
+    0%, 100% {
+      transform: translateY(-8px);
+    }
+    50% {
+      transform: translateY(8px);
+    }
+  }
+
+  .result-word-chip:nth-child(even) {
+    animation-delay: -0.8s;
+  }
+
+  .result-btn-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .start-btn {
+    font-family: 'GowunDodum', sans-serif;
+    font-size: 16px;
+    padding: 10px 28px;
+    border-radius: 999px;
+    border: none;
+    background: #0F3253;
+    color: #FFFFFF;
+    cursor: pointer;
+    box-shadow: none;
+  }
+
+  .start-btn:hover {
+    background: #0D2943;
+  }
+
+  /* 👉 “처음으로” 버튼 텍스트 크기만 키운 버전 */
+  #quiz-result-screen .start-btn {
+    font-size: 24px !important;
+  }
+</style>
+
+</head>
+<body>
+
+<!-- 상단 HUD -->
+<div class="hud-row">
+  <!-- 중앙 큰 카드 -->
+  <div class="hud-main">
+    <!-- 제목은 숨기고 -->
+    <div id="hud-main-title" class="hud-main-title" style="display:none;"></div>
+    <!-- 부연 설명을 큰 제목처럼 -->
+    <div id="hud-main-sub" class="hud-main-sub main-big-title">
+      제주어를 찾아 아래 입력칸에 적어보세요.
+    </div>
+
+    <div class="hud-main-body">
+      <div id="input-row" class="input-row">
+        <input
+          id="answer-input"
+          class="answer-input"
+          type="text"
+          placeholder="찾은 제주어를 적어보세요"
+        />
+        <button id="answer-btn" class="answer-btn">입력</button>
+      </div>
+
+      <!-- 정답 상태에서 보여줄 흰 박스 -->
+      <div id="answer-display" class="answer-display"></div>
+    </div>
+
+    <div id="answer-feedback" class="answer-feedback"></div>
+  </div>
+
+  <!-- 오른쪽 작은 카드 2개 -->
+  <div class="hud-side">
+    <div id="time-pill" class="hud-pill">남은 시간 | 00:50</div>
+    <div id="score-pill" class="hud-pill">맞춘 정답 | 0개</div>
+  </div>
+</div>
+
+<!-- 제주어 단어 레이어 (맨 뒤) -->
+<div class="word-layer" id="words"></div>
+
+<!-- 🦵 GIF (상단 중앙, 줄 아래 레이어) -->
+<img src="legs.gif" alt="legs animation" class="legs-gif" />
+
+<!-- 줄 캔버스 -->
+<canvas id="cv"></canvas>
+
+<!-- 결과 화면 (영상 배경) -->
+<div id="quiz-result-screen">
+  <video
+    class="result-video"
+    autoplay
+    muted
+    loop
+    playsinline
+  >
+    <source src="https://cdn.midjourney.com/video/1905a823-3bac-47c0-a0f9-32bc324c4328/1.mp4" type="video/mp4">
+  </video>
+
+  <div class="result-inner">
+    <h2 id="result-title">제주어 0개 획득!</h2>
+    <p class="result-sub">제주어 살리기에 동참했어요</p>
+
+    <div class="result-words-panel" id="result-words-panel">
+      <div class="result-words-cloud" id="result-words-cloud"></div>
+    </div>
+
+    <div class="result-btn-wrap">
+      <button class="start-btn" onclick="goToMainFromResult()">처음으로</button>
+    </div>
+  </div>
+</div>
+
+<!-- 🌊 배경 파도 소리 (게임 시작 ~ 결과 페이지까지 재생) -->
+<audio id="bg-waves" src="Sound of waves.mp3" preload="auto" loop></audio>
+
+<script>
+(() => {
+  /* ===========================
+     단어 / 뜻 데이터
+  ============================ */
+  const WORDS = [
+    "느단손","오르손","독세기","구덕","요망지다","쪼락","허벅","달코롬",
+    "마농","바농","심방","잠녀","도새기","배또롱","상뻬"
+  ];
+
+  const MEANINGS = {
+    "느단손": "느닷없이 찾아온 손님",
+    "오르손": "오른손",
+    "독세기": "계란",
+    "구덕": "바구니",
+    "요망지다": "야무지다",
+    "쪼락진": "떫은",
+    "허벅": "물을 길어 나르는 물동이",
+    "달코롬": "달콤한",
+    "마농": "마늘",
+    "바농": "밭에서 나는 농작물",
+    "심방": "무당",
+    "잠녀": "해녀",
+    "도새기": "돼지",
+    "배또롱": "짐을 나를 때 쓰는 도구",
+    "상뻬": "눈치를 지나치게 보는 태도"
+  };
+
+  const wordLayer = document.getElementById("words");
+  const answerInput = document.getElementById("answer-input");
+  const answerBtn = document.getElementById("answer-btn");
+  const answerDisplay = document.getElementById("answer-display");
+  const inputRow = document.getElementById("input-row");
+  const answerFeedbackEl = document.getElementById("answer-feedback");
+  const mainTitleEl = document.getElementById("hud-main-title");
+  const mainSubEl = document.getElementById("hud-main-sub");
+  const timePill = document.getElementById("time-pill");
+  const scorePill = document.getElementById("score-pill");
+
+  const resultScreen = document.getElementById("quiz-result-screen");
+  const resultTitleEl = document.getElementById("result-title");
+  const resultWordsPanel = document.getElementById("result-words-panel");
+  const resultWordsCloud = document.getElementById("result-words-cloud");
+
+  let score = 0;
+  const foundSet = new Set();     // 맞춘 단어들
+  let correctWords = [];          // 결과 화면 칩에 쓸 단어들
+  let wrongAnswers = [];          // 틀린 답 리스트 (현재는 UI에 사용 안 함)
+  let feedbackTimer = null;       // 정답 박스 후 인풋 재표시 타이머
+
+  /* ===== 점수 업데이트 ===== */
+  function updateScore() {
+    if (!scorePill) return;
+    scorePill.textContent = `맞춘 정답 | ${score}개`;
+  }
+
+  /* ===== 단어 배치 (서로 안 겹치고, 단어도 중복 없이) ===== */
+  function placeWords() {
+    wordLayer.innerHTML = "";
+
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const minY = 310; // 카드 영역 아래부터 배치
+
+    // 아직 못 찾은 단어들만 가져오기
+    const availableWords = WORDS.filter(w => !foundSet.has(w));
+    const count = availableWords.length;
+
+    // 단어 순서 섞기
+    const shuffled = [...availableWords];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    const placed = [];
+
+    function overlap(a, b) {
+      return !(
+        a.x + a.w < b.x ||
+        b.x + b.w < a.x ||
+        a.y + a.h < b.y ||
+        b.y + b.h < a.y
+      );
+    }
+
+    for (let i = 0; i < count; i++) {
+      const text = shuffled[i];
+
+      const el = document.createElement("div");
+      el.className = "word";
+      el.textContent = text;
+      el.style.left = "0px";
+      el.style.top = "0px";
+
+      wordLayer.appendChild(el);
+
+      const rect = el.getBoundingClientRect();
+      const w = rect.width + 10;
+      const h = rect.height + 10;
+
+      let x, y, ok, tries = 0;
+      do {
+        x = Math.random() * Math.max(1, (W - w));
+        y = minY + Math.random() * Math.max(1, (H - minY - h));
+        ok = true;
+        for (const p of placed) {
+          if (overlap({ x, y, w, h }, p)) {
+            ok = false;
+            break;
+          }
+        }
+        tries++;
+      } while (!ok && tries < 300);
+
+      el.style.left = x + "px";
+      el.style.top = y + "px";
+      placed.push({ x, y, w, h });
+    }
+  }
+
+  /* ===== 단어 클릭: 하이라이트만 ===== */
+  function handleWordClick(clientX, clientY) {
+    const words = document.querySelectorAll(".word");
+    let clicked = null;
+
+    words.forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (
+        clientX >= r.left && clientX <= r.right &&
+        clientY >= r.top && clientY <= r.bottom
+      ) {
+        clicked = el;
+      }
+      el.classList.remove("word-clicked");
+    });
+
+    if (clicked) {
+      clicked.classList.add("word-clicked");
+    }
+  }
+
+  /* ===== 정답 입력 처리 ===== */
+  function submitAnswer() {
+    if (!answerInput || !answerFeedbackEl) return;
+    const val = (answerInput.value || "").trim();
+    if (!val) return;
+    if (timeLeft <= 0) return;
+
+    // 새 입력 시, 이전 정답 카드/문구 초기화
+    if (feedbackTimer) {
+      clearTimeout(feedbackTimer);
+      feedbackTimer = null;
+    }
+
+    answerFeedbackEl.textContent = "";
+    answerFeedbackEl.style.color = "#FFFFFF";
+    answerDisplay.style.display = "none";
+    // 제목은 숨겨져 있기 때문에 텍스트만 초기화
+    mainTitleEl.textContent = "";
+    mainSubEl.textContent = "제주어를 찾아 아래 입력칸에 적어보세요.";
+    mainSubEl.classList.add("main-big-title");
+
+    // 목록에 없는 단어 => 그냥 피드백만
+    if (!WORDS.includes(val)) {
+      wrongAnswers.push(val);
+      answerFeedbackEl.textContent = "목록에 없는 단어예요. 다시 한 번 확인해볼까요?";
+      answerFeedbackEl.style.color = "#FFE8EC";
+      answerInput.value = "";
+      return;
+    }
+
+    const meaning = MEANINGS[val] || "";
+
+    // 정답 상태 표시: 제목/설명 바꾸고 입력칸 숨기고 흰 박스만 보여주기
+    mainTitleEl.textContent = ""; // 보이지 않음
+    mainSubEl.textContent = "정답!";
+    mainSubEl.classList.remove("main-big-title");
+    answerDisplay.textContent = meaning ? `${val} : ${meaning}` : val;
+    answerDisplay.style.display = "block";
+    if (inputRow) inputRow.style.display = "none";
+
+    if (foundSet.has(val)) {
+      // 이미 찾은 단어
+      answerFeedbackEl.textContent = "이미 찾은 제주어예요!";
+      answerFeedbackEl.style.color = "#FFF8C9";
+    } else {
+      // 새로 찾은 단어
+      foundSet.add(val);
+      correctWords.push(val);
+      score++;
+      updateScore();
+      answerFeedbackEl.textContent = "";
+    }
+
+    // 화면에서 해당 단어 제거 (찾아서 입력한 제주어는 지워지게)
+    const wordEls = document.querySelectorAll(".word");
+    wordEls.forEach(el => {
+      if (el.textContent.trim() === val) {
+        el.remove();
+      }
+    });
+
+    // 2.5초 뒤에 인풋칸 다시 등장 + 기본 상태로 리셋
+    feedbackTimer = setTimeout(() => {
+      answerDisplay.style.display = "none";
+      mainTitleEl.textContent = "";
+      mainSubEl.textContent = "제주어를 찾아 아래 입력칸에 적어보세요.";
+      mainSubEl.classList.add("main-big-title");
+      answerFeedbackEl.textContent = "";
+      if (inputRow) inputRow.style.display = "flex";
+      answerInput.value = "";
+      answerInput.focus();
+    }, 2500);
+  }
+
+  if (answerBtn) {
+    answerBtn.addEventListener("click", submitAnswer);
+  }
+
+  if (answerInput) {
+    answerInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitAnswer();
+      }
+    });
+  }
+
+  /* ===== 50초 타이머 ===== */
+  let timeLeft = 50;
+  let timerId = null;
+
+  function formatTime(sec) {
+    const m = String(Math.floor(sec / 60)).padStart(2, "0");
+    const s = String(sec % 60).padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  function updateTime() {
+    if (!timePill) return;
+    timePill.textContent = `남은 시간 | ${formatTime(timeLeft)}`;
+  }
+
+  function startTimer() {
+    if (timerId) clearInterval(timerId);
+    updateTime();
+    timerId = setInterval(() => {
+      timeLeft--;
+      if (timeLeft <= 0) {
+        timeLeft = 0;
+        updateTime();
+        clearInterval(timerId);
+        showResultPage();
+      } else {
+        updateTime();
+      }
+    }, 1000);
+  }
+
+  /* ===== 결과 화면 ===== */
+  function renderResultWords() {
+    if (!resultWordsCloud || !resultWordsPanel) return;
+
+    resultWordsCloud.innerHTML = "";
+    if (!correctWords.length) {
+      resultWordsPanel.style.display = "none";
+      return;
+    }
+    resultWordsPanel.style.display = "block";
+
+    correctWords.forEach(word => {
+      const chip = document.createElement("div");
+      chip.className = "result-word-chip";
+      chip.textContent = word;
+      resultWordsCloud.appendChild(chip);
+    });
+  }
+
+  function showResultPage() {
+    if (!resultScreen) return;
+
+    resultTitleEl.textContent = `제주어 ${score}개 획득!`;
+    renderResultWords();
+
+    resultScreen.style.display = "block";
+    requestAnimationFrame(() => {
+      resultScreen.style.opacity = 1;
+    });
+  }
+
+  // "처음으로" → index.html의 circle 단계로 이동
+  window.goToMainFromResult = function() {
+    window.location.href = "index.html#circle";
+  };
+
+  /* ===========================
+     줄 캔버스
+  ============================ */
+  const cvs = document.getElementById("cv");
+  const ctx = cvs.getContext("2d");
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+  const ROWS = 30;
+  const COLS = 20;
+  const THICK = 24 * DPR;
+  const GAP_Y = 0 * DPR;
+  const COL_GAP = -20 * DPR;
+  const MARGIN_X = -10 * DPR;
+  const MARGIN_Y = 310 * DPR;
+
+  const BASE_LEN_FRAC = 0.68;
+  const EXTRA_LEN = 80 * DPR;
+
+  const REACT_R = 40 * DPR;
+  const REACT_SPD = 0.48;
+  const RETURN_SPD = 0.28;
+  const ANGLE_LIMIT = 85 * Math.PI / 180;
+  const EXTRA_STEP_X = 40 * DPR;
+
+  const LINE_COLORS = ["#00D9FF", "#45E0E8", "#BBF8FD"];
+  const randomColor = () => LINE_COLORS[Math.floor(Math.random() * LINE_COLORS.length)];
+
+  let Wc = 0, Hc = 0, COL_W = 0;
+  const segs = [];
+
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const lerpAngle = (a, b, t) => {
+    const TAU = Math.PI * 2;
+    let d = (b - a + Math.PI) % TAU - Math.PI;
+    return a + d * t;
+  };
+
+  function drawCapsulePath(ax, ay, ang, len, thick) {
+    const r = thick / 2;
+    ctx.translate(ax, ay);
+    ctx.rotate(ang);
+    ctx.beginPath();
+    ctx.moveTo(r, -r);
+    ctx.lineTo(len - r, -r);
+    ctx.arc(len - r, 0, r, -Math.PI / 2, Math.PI / 2);
+    ctx.lineTo(r, r);
+    ctx.arc(r, 0, r, Math.PI / 2, -Math.PI / 2);
+    ctx.closePath();
+  }
+
+  function fillCapsule(ax, ay, ang, len, thick, fill, alpha = 1) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    drawCapsulePath(ax, ay, ang, len, thick);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function distPointToRotatedSegment(px, py, ax, ay, ang, len) {
+    const bx = ax + Math.cos(ang) * len;
+    const by = ay + Math.sin(ang) * len;
+    const vx = bx - ax, vy = by - ax;
+    const wx = px - ax, wy = py - ay;
+
+    const c1 = vx * wx + vy * wy;
+    if (c1 <= 0) return Math.hypot(px - ax, py - ay);
+    const c2 = vx * vx + vy * vy;
+    if (c2 <= c1) return Math.hypot(px - bx, py - by);
+
+    const t = c1 / c2;
+    const qx = ax + t * vx;
+    const qy = ay + t * vy;
+    return Math.hypot(px - qx, py - qy);
+  }
+
+  function resize() {
+    Wc = cvs.width = Math.floor(window.innerWidth * DPR);
+    Hc = cvs.height = Math.floor(window.innerHeight * DPR);
+    cvs.style.width = window.innerWidth + "px";
+    cvs.style.height = window.innerHeight + "px";
+    layout();
+  }
+
+  window.addEventListener("resize", () => {
+    resize();
+    placeWords();   // 리사이즈해도 겹치지 않게 다시 배치 (이미 찾은 단어는 제외)
+  });
+
+  function layout() {
+    segs.length = 0;
+
+    const totalGap = COL_GAP * (COLS - 1);
+    COL_W = (Wc - MARGIN_X * 2 - totalGap) / COLS;
+
+    const baseStepX = COL_W + COL_GAP;
+    const stepX = baseStepX + EXTRA_STEP_X;
+
+    const totalH = ROWS * THICK + (ROWS - 1) * GAP_Y;
+    const startY = Math.max(MARGIN_Y, (Hc - totalH) / 2) + THICK / 2;
+    const startX = MARGIN_X;
+
+    for (let r = 0; r < ROWS; r++) {
+      const cy = startY + r * (THICK + GAP_Y);
+      for (let c = 0; c < COLS; c++) {
+        const colLeft = startX + c * stepX;
+        const baseLen = COL_W * BASE_LEN_FRAC + EXTRA_LEN;
+        segs.push({
+          anchor: { x: colLeft, y: cy },
+          base:   { angle: 0, length: baseLen },
+          cur:    { angle: 0, length: baseLen },
+          color:  randomColor()
+        });
+      }
+    }
+  }
+
+  const pointer = { x: 0, y: 0, down: false };
+
+  function setPos(e) {
+    if (e.touches && e.touches[0]) {
+      pointer.x = e.touches[0].clientX * DPR;
+      pointer.y = e.touches[0].clientY * DPR;
+    } else {
+      pointer.x = e.clientX * DPR;
+      pointer.y = e.clientY * DPR;
+    }
+  }
+
+  cvs.addEventListener("mousemove", setPos, { passive: true });
+
+  cvs.addEventListener("mousedown", (e) => {
+    setPos(e);
+    pointer.down = true;
+    handleWordClick(e.clientX, e.clientY);
+  });
+
+  window.addEventListener("mouseup", () => {
+    pointer.down = false;
+  });
+
+  cvs.addEventListener("touchstart", (e) => {
+    setPos(e);
+    pointer.down = true;
+    const t = e.touches[0];
+    handleWordClick(t.clientX, t.clientY);
+  }, { passive: false });
+
+  cvs.addEventListener("touchmove", (e) => {
+    setPos(e);
+    e.preventDefault();
+  }, { passive: false });
+
+  window.addEventListener("touchend", () => {
+    pointer.down = false;
+  });
+
+  function frame() {
+    ctx.clearRect(0, 0, Wc, Hc);
+
+    for (const s of segs) {
+      s.cur.length = s.base.length;
+      let target = 0;
+
+      if (pointer.down) {
+        const d = distPointToRotatedSegment(
+          pointer.x, pointer.y,
+          s.anchor.x, s.anchor.y,
+          s.cur.angle, s.cur.length
+        );
+        if (d <= REACT_R) {
+          target = Math.max(-ANGLE_LIMIT, Math.min(
+            ANGLE_LIMIT,
+            Math.atan2(pointer.y - s.anchor.y, pointer.x - s.anchor.x)
+          ));
+        }
+      }
+
+      s.cur.angle = lerpAngle(
+        s.cur.angle,
+        target,
+        pointer.down ? REACT_SPD : RETURN_SPD
+      );
+
+      fillCapsule(
+        s.anchor.x,
+        s.anchor.y,
+        s.cur.angle,
+        s.cur.length,
+        THICK,
+        s.color,
+        1
+      );
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  // 초기 상태 세팅
+  placeWords();
+  resize();
+  requestAnimationFrame(frame);
+  startTimer();
+})();
+
+/* 🌊 페이지 들어온 뒤부터 결과 화면까지 파도소리 재생 */
+window.addEventListener("load", () => {
+  const bg = document.getElementById("bg-waves");
+  if (!bg) return;
+  try {
+    bg.currentTime = 0;
+    bg.play();
+  } catch (e) {
+    // 브라우저 자동재생 정책에 막혀도 조용히 무시
+  }
+});
+</script>
+</body>
+</html>
